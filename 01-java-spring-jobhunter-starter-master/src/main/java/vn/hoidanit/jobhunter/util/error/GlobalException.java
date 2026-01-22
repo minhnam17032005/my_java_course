@@ -11,10 +11,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import vn.hoidanit.jobhunter.domain.response.RestResponse;
 import vn.hoidanit.jobhunter.util.error.IdInValidException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
-
-import vn.hoidanit.jobhunter.domain.RestResponse;
 
 
 @RestControllerAdvice

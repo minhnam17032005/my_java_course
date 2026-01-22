@@ -2,6 +2,8 @@ package vn.hoidanit.jobhunter.domain.response;
 
 import java.time.Instant;
 
+import vn.hoidanit.jobhunter.util.constant.GenderEnum;
+
 public class ResUserDTO {
     private Long id;
     private String name;
@@ -9,7 +11,7 @@ public class ResUserDTO {
 
     private int age; 
 
-    private String gender; 
+    private GenderEnum gender; 
     
     private String address;  
     
@@ -17,6 +19,52 @@ public class ResUserDTO {
     
     private Instant updatedAt;
 
+    private CompanyUser company;
+
+    //inner class
+    public static class CompanyUser{
+        private Long id;
+        private String name;
+
+        public CompanyUser() {
+        }
+        public CompanyUser(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+    }
+
+    //getter setter ResUserDTO
+    public ResUserDTO() {
+    }
+    
+    public ResUserDTO(Long id, String name, int age,String email,GenderEnum gender,String address, Instant createdAt, Instant updatedAt,CompanyUser company) {
+            this.address = address;
+            this.age = age;
+            this.company = company;
+            this.createdAt = createdAt;
+            this.email = email;
+            this.gender = gender;
+            this.id = id;
+            this.name = name;
+            this.updatedAt = updatedAt;
+    }
     public Long getId() {
         return id;
     }
@@ -49,11 +97,11 @@ public class ResUserDTO {
         this.age = age;
     }
 
-    public String getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(GenderEnum gender) {
         this.gender = gender;
     }
 
@@ -81,5 +129,12 @@ public class ResUserDTO {
         this.updatedAt = updatedAt;
     }
 
+    public CompanyUser getCompany() {
+        return company;
+    }
 
+    public void setCompany(CompanyUser company) {
+        this.company = company;
+    }
+    
 }

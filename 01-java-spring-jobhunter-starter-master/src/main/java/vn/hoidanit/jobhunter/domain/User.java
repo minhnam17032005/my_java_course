@@ -8,9 +8,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -25,12 +28,10 @@ public class User {
     private String name;
     private String email;
     private String password;
-
     private int age; 
     
     @Enumerated(EnumType.STRING)
     private GenderEnum gender;        
-
     private String address;  
 
     @Column(columnDefinition = "MEDIUMTEXT")       
@@ -42,6 +43,13 @@ public class User {
 
     private String createdBy;
     private String updatedBy;
+
+    //relationship N-1 with Company
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+
 
     @PrePersist
     public void handleBeforeCreate() {
@@ -149,6 +157,14 @@ public class User {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
 }
