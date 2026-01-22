@@ -8,11 +8,10 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.dto.Meta;
-import vn.hoidanit.jobhunter.domain.dto.ResCreateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResUserDTO;
-import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 import vn.hoidanit.jobhunter.util.error.IdInValidException;
 
@@ -32,7 +31,7 @@ public class UserService {
         Page<User> pageUser = userRepository.findAll(spec, pageable);
 
         // meta
-        Meta meta = new Meta();
+        ResultPaginationDTO.Meta meta = new  ResultPaginationDTO.Meta();
         meta.setPage(pageable.getPageNumber() + 1);
         meta.setPageSize(pageable.getPageSize());
         meta.setPages(pageUser.getTotalPages());
@@ -49,6 +48,7 @@ public class UserService {
                 String gender = user.getGender() != null
                     ? user.getGender().toString()
                     : null;
+                dto.setGender(gender);
                 dto.setAge(user.getAge());
                 dto.setAddress(user.getAddress());
                 dto.setCreatedAt(user.getCreatedAt());

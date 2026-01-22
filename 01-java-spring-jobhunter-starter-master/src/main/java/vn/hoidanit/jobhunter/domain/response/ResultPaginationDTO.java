@@ -1,6 +1,11 @@
-package vn.hoidanit.jobhunter.domain.dto;
+package vn.hoidanit.jobhunter.domain.response;
 
-public class Meta {
+public class ResultPaginationDTO {
+    private Meta meta;
+    private Object result;
+    
+    //inner class với object Meta
+    public static class Meta{
     private int page;    //trang hiện tại
     private int pageSize;   //số record trong 1 trang
     private int pages;   //số trang hiện tại
@@ -38,5 +43,24 @@ public class Meta {
         this.total = total;
     }
 
+    }
 
+    //getter setter của ResultPaginationDTO
+    public Meta getMeta() {
+        return meta;
+    }
+
+    public Object getResult() {
+        return result;
+    }
+
+    public void setMeta(Meta meta) {
+        this.meta = meta;
+    }
+
+    public void setResult(Object result) {
+        this.result = result;
+    }
+    
+    
 }
