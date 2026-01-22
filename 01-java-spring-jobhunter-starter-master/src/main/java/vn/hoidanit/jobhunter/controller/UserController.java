@@ -18,10 +18,10 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.dto.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.CreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.ResponseDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.UpdateDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 
@@ -56,22 +56,22 @@ public class UserController {
     //getById
     @GetMapping("/users/{id}")
     @ApiMessage("fetch user by id")
-    public ResponseEntity<ResponseDTO> getUserById(@PathVariable("id") Long id) {
-        ResponseDTO user = userService.fetchUserById(id);
+    public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") Long id) {
+        ResUserDTO user = userService.fetchUserById(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     //PostMapping("/users")
     @PostMapping("/users")
     @ApiMessage("create a new user")
-    public ResponseEntity<CreateDTO> createNewUser(@Valid @RequestBody User postManUser) {
+    public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) {
 
         //Hash password trước khi lưu DB
         String hashPassword = passwordEncoder.encode(postManUser.getPassword());
         postManUser.setPassword(hashPassword);
 
         // Gọi service lưu user
-        CreateDTO newUser = userService.handleCreateUser(postManUser);
+        ResCreateUserDTO newUser = userService.handleCreateUser(postManUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
@@ -79,8 +79,8 @@ public class UserController {
     //UpdateMapping("/users")
     @PutMapping("/users")
     @ApiMessage("update a user")
-    public ResponseEntity<UpdateDTO> updateUser(@Valid @RequestBody User putManUser) {
-        UpdateDTO user = userService.handleUpdateUser(putManUser);
+    public ResponseEntity<ResUpdateUserDTO> updateUser(@Valid @RequestBody User putManUser) {
+        ResUpdateUserDTO user = userService.handleUpdateUser(putManUser);
         return ResponseEntity.ok(user);
     }
 

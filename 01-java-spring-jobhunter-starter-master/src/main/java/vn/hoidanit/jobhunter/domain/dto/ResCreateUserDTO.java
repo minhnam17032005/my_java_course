@@ -1,21 +1,20 @@
-package vn.hoidanit.jobhunter.domain.dto.user;
+package vn.hoidanit.jobhunter.domain.dto;
 
 import java.time.Instant;
 
-public class UpdateDTO {
+public class ResCreateUserDTO {
     
     private Long id;
-
     private String name;
+    private String email;
 
     private int age; 
 
     private String gender; 
-
     
     private String address;  
     
-    private Instant updatedAt;
+    private Instant createdAt;
 
     public Long getId() {
         return id;
@@ -31,6 +30,14 @@ public class UpdateDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public int getAge() {
@@ -57,14 +64,13 @@ public class UpdateDTO {
         this.address = address;
     }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
-
 
 
 }

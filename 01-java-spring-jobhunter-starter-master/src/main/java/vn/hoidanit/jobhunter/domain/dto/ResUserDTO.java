@@ -1,8 +1,8 @@
-package vn.hoidanit.jobhunter.domain.dto.user;
+package vn.hoidanit.jobhunter.domain.dto;
 
 import java.time.Instant;
 
-public class ResponseDTO {
+public class ResUserDTO {
     private Long id;
     private String name;
     private String email;

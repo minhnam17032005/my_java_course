@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.dto.Meta;
+import vn.hoidanit.jobhunter.domain.dto.ResCreateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.dto.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.dto.ResultPaginationDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.CreateDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.ResponseDTO;
-import vn.hoidanit.jobhunter.domain.dto.user.UpdateDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 import vn.hoidanit.jobhunter.util.error.IdInValidException;
 
@@ -39,10 +39,10 @@ public class UserService {
         meta.setTotal(pageUser.getTotalElements());
 
         // map User -> ResponseDTO
-        List<ResponseDTO> users = pageUser.getContent()
+        List<ResUserDTO> users = pageUser.getContent()
             .stream()
             .map(user -> {
-                ResponseDTO dto = new ResponseDTO();
+                ResUserDTO dto = new ResUserDTO();
                 dto.setId(user.getId());
                 dto.setName(user.getName());
                 dto.setEmail(user.getEmail());
@@ -65,14 +65,14 @@ public class UserService {
     }
 
     //getid
-    public ResponseDTO fetchUserById(Long id) {
+    public ResUserDTO fetchUserById(Long id) {
         User user = userRepository.findById(id)
         .orElseThrow(() ->
             new IdInValidException(
                 "User với id = " + id + " không tồn tại"
             )
         );
-        ResponseDTO rpUser = new ResponseDTO();
+        ResUserDTO rpUser = new ResUserDTO();
         rpUser.setId(user.getId());
         rpUser.setEmail(user.getEmail());
         rpUser.setName(user.getName());
@@ -85,14 +85,14 @@ public class UserService {
     }
     
     //create
-    public CreateDTO handleCreateUser(User user) {
+    public ResCreateUserDTO handleCreateUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new IllegalArgumentException(
                 "Email " + user.getEmail() + " đã tồn tại, vui lòng sử dụng email khác");
             }
             User newUser = userRepository.save(user);
             
-            CreateDTO rpUser = new CreateDTO();
+            ResCreateUserDTO rpUser = new ResCreateUserDTO();
             rpUser.setId(newUser.getId());
             rpUser.setName(newUser.getName());
             rpUser.setEmail(newUser.getEmail());
@@ -105,7 +105,7 @@ public class UserService {
     }
 
     //update
-    public UpdateDTO handleUpdateUser(User repUser){
+    public ResUpdateUserDTO handleUpdateUser(User repUser){
         User currentUser = userRepository.findById(repUser.getId())
         .orElseThrow(() ->
             new IdInValidException(
@@ -123,7 +123,7 @@ public class UserService {
         User updatedUser = userRepository.save(currentUser);
 
         //convert sang UpdateDTO
-        UpdateDTO rpUser = new UpdateDTO();
+        ResUpdateUserDTO rpUser = new ResUpdateUserDTO();
         rpUser.setId(updatedUser.getId());
         rpUser.setName(updatedUser.getName());
         rpUser.setGender(updatedUser.getGender().toString());
