@@ -47,6 +47,7 @@ public class UserService {
         mt.setPages(pageUser.getTotalPages());
         mt.setTotal(pageUser.getTotalElements());
 
+        //set meta into object ResultPaginationDTO
         rs.setMeta(mt);
 
         // remove sensitive data
@@ -65,6 +66,7 @@ public class UserService {
                         item.getCompany() != null ? item.getCompany().getName() : null)))
                 .collect(Collectors.toList());
 
+        //set result into object ResultPaginationDTO
         rs.setResult(listUsers);
         return rs;
     }

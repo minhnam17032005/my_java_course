@@ -4,6 +4,7 @@ import java.util.List;
 import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,8 +41,7 @@ public class Job {
 
     private Instant startDate;
     private Instant endDate;
-    private boolean isActive;
-
+    private boolean active;
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
@@ -54,7 +54,7 @@ public class Job {
 
     //relationship N-N with Skill
     @ManyToMany(fetch = FetchType.LAZY)
-    @JsonIgnore
+    @JsonIgnoreProperties(value={ "job" })
     @JoinTable(name = "job_skill", joinColumns = @JoinColumn(name = "job_id"), 
                 inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
@@ -149,12 +149,12 @@ public class Job {
         this.endDate = endDate;
     }
 
-    public boolean isIsActive() {
-        return isActive;
+    public boolean isActive() {
+        return active;
     }
 
-    public void setIsActive(boolean isActive) {
-        this.isActive = isActive;
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Instant getCreatedAt() {
