@@ -104,7 +104,7 @@ public class JobService {
         return dto;
     }
     public void delete (long id){
-        this.jobRepository.deletedById(id);
+        this.jobRepository.deleteById(id);
     }
 
     public ResultPaginationDTO fetchAll(Specification<Job> spec, Pageable pageable) {

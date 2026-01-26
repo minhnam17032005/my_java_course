@@ -8,5 +8,4 @@ import vn.hoidanit.jobhunter.domain.Job;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job,Long> ,JpaSpecificationExecutor<Job>{
-    void deletedById(long id);
 }
