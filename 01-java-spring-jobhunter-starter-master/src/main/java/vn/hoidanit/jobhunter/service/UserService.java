@@ -2,8 +2,6 @@ package vn.hoidanit.jobhunter.service;
 
 import java.util.List;
 import java.util.Optional;
-
-import vn.hoidanit.jobhunter.domain.Company;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -11,16 +9,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import vn.hoidanit.jobhunter.repository.CompanyRepository;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.repository.CompanyRepository;
 import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
-import vn.hoidanit.jobhunter.util.error.IdInValidException;
+import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 @Service
 public class UserService {
@@ -113,7 +109,7 @@ public class UserService {
     //delete
     public void handleDeleteUser(Long id) {
         if (!userRepository.existsById(id)) {
-            throw new IdInValidException(
+            throw new IdInvalidException(
                 "User với id = " + id + " không tồn tại"
             );
         }

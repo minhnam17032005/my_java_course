@@ -1,7 +1,7 @@
 package vn.hoidanit.jobhunter.util.error;
 
-public class IdInValidException extends RuntimeException {
-    public IdInValidException(String message) {
+public class IdInvalidException extends RuntimeException {
+    public IdInvalidException(String message) {
         super(message);
     }
     

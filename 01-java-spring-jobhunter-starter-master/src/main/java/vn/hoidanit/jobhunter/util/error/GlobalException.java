@@ -11,10 +11,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import vn.hoidanit.jobhunter.domain.response.RestResponse;
-import vn.hoidanit.jobhunter.util.error.IdInValidException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 
 @RestControllerAdvice
@@ -23,7 +22,7 @@ public class GlobalException {
         @ExceptionHandler(value = {
                 UsernameNotFoundException.class,
                 BadCredentialsException.class,
-                IdInValidException.class
+                IdInvalidException.class
 
         })
         public ResponseEntity<RestResponse<Object>> handleIdException(Exception ex) {
@@ -82,5 +81,18 @@ public class GlobalException {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(res);
+        }
+
+
+        @ExceptionHandler(value = {
+                StorageException.class
+
+        })
+        public ResponseEntity<RestResponse<Object>> handleFileUploadException(Exception ex) {
+                RestResponse<Object> res = new RestResponse<Object>();
+                res.setStatusCode(HttpStatus.BAD_REQUEST.value());
+                res.setError(ex.getMessage());
+                res.setMessage("Exception upload file...");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
         }
 }

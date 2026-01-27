@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
@@ -23,7 +24,7 @@ import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
-import vn.hoidanit.jobhunter.util.error.IdInValidException;
+import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 
 @RestController
@@ -57,10 +58,10 @@ public class UserController {
     @GetMapping("/users/{id}")
     @ApiMessage("fetch user by id")
     public ResponseEntity<ResUserDTO> getUserById(@PathVariable("id") Long id)
-        throws IdInValidException {
+        throws IdInvalidException {
             User fetchUser  = this.userService.fetchUserById(id);
         if(fetchUser == null){
-            throw new IdInValidException("User với id = "+id+" không tồn tại");
+            throw new IdInvalidException("User với id = "+id+" không tồn tại");
         }
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -71,12 +72,12 @@ public class UserController {
     @PostMapping("/users")
     @ApiMessage("Create a new user")
     public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) 
-        throws IdInValidException {
+        throws IdInvalidException {
 
         boolean isEmailExist =this.userService.isEmailExist(postManUser.getEmail());
 
         if (isEmailExist) {
-            throw new IdInValidException("Email " + postManUser.getEmail()+ " đã tồn tại, vui lòng sử dụng email khác"
+            throw new IdInvalidException("Email " + postManUser.getEmail()+ " đã tồn tại, vui lòng sử dụng email khác"
             );
         }
         String hashPassword =this.passwordEncoder.encode(postManUser.getPassword());
@@ -94,7 +95,7 @@ public class UserController {
     public ResponseEntity<ResUpdateUserDTO> updateUser(@Valid @RequestBody User user) {
         User ericUser = userService.handUpdateUser(user);
         if(ericUser ==null ){
-            throw new IdInValidException("User với id "+user.getId() +" không tồn tại");
+            throw new IdInvalidException("User với id "+user.getId() +" không tồn tại");
         }
         return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(ericUser));
     }
@@ -103,10 +104,10 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     @ApiMessage("delete a user")
     public ResponseEntity<Void>  deleteUser(@PathVariable("id") Long id)
-            throws IdInValidException {
+            throws IdInvalidException {
         User currentUser=  userService.fetchUserById(id);
         if(currentUser == null){
-            throw new IdInValidException("User với id "+id+" không tồn tại");
+            throw new IdInvalidException("User với id "+id+" không tồn tại");
         }
         userService.handleDeleteUser(id);      
         return ResponseEntity.ok(null);

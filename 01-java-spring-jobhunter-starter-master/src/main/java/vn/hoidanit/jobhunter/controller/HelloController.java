@@ -3,13 +3,13 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import vn.hoidanit.jobhunter.util.error.IdInValidException;
+import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 @RestController
 public class HelloController {
 
     @GetMapping("/")
-    public String getHelloWorld() throws IdInValidException {
+    public String getHelloWorld() throws IdInvalidException {
         return "Hello World ,Hỏi thằng Nam ấy )";
     }
 }

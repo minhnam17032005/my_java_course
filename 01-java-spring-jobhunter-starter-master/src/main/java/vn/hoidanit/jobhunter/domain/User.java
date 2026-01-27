@@ -1,8 +1,10 @@
 package vn.hoidanit.jobhunter.domain;
 
 import java.time.Instant;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,11 +16,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.constant.GenderEnum;
+
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -48,7 +53,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
-
+    
+    //relationship 1-N with Resume
+    @OneToMany(mappedBy="user" , fetch=FetchType.LAZY)
+    @JsonIgnore
+    List<Resume> resumes;
 
 
     @PrePersist

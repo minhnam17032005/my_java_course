@@ -22,7 +22,7 @@ import vn.hoidanit.jobhunter.domain.response.ResLoginDTO;
 import vn.hoidanit.jobhunter.service.UserService;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
-import vn.hoidanit.jobhunter.util.error.IdInValidException;
+import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
 
 @RestController
@@ -119,10 +119,10 @@ public class AuthController {
     @GetMapping("/auth/refresh")
     @ApiMessage("Get User by refresh token")
     public ResponseEntity<ResLoginDTO> getRefreshToken(
-            @CookieValue(name = "refresh_token", defaultValue ="abc")  String refresh_token) throws IdInValidException  {
+            @CookieValue(name = "refresh_token", defaultValue ="abc")  String refresh_token) throws IdInvalidException  {
         //có thể viết ngoại lệ riêng cho trường hợp này ở GlobalException
         if(refresh_token.equals("abc")){
-            throw new IdInValidException(" bạn không có Refresh Token ở cookie");
+            throw new IdInvalidException(" bạn không có Refresh Token ở cookie");
         }
         
         // check valid
@@ -132,7 +132,7 @@ public class AuthController {
         //check user by token + email hiện tại
         User currentUser = this.userService.getUserByRefreshTokenAndEmail(refresh_token, email);
         if (currentUser == null) {
-            throw new IdInValidException("Refresh Token không hợp lệ");
+            throw new IdInvalidException("Refresh Token không hợp lệ");
         }
 
         //issue new token/set refresh token as cookies
@@ -174,14 +174,14 @@ public class AuthController {
 
     @PostMapping("/auth/logout")
     @ApiMessage("Logout User")
-    public ResponseEntity<Void> logout() throws IdInValidException {
+    public ResponseEntity<Void> logout() throws IdInvalidException {
 
         String email = SecurityUtil.getCurrentUserLogin().isPresent()
                 ? SecurityUtil.getCurrentUserLogin().get()
                 : "";
 
         if (email.equals("")) {
-            throw new IdInValidException("Access Token không hợp lệ");
+            throw new IdInvalidException("Access Token không hợp lệ");
         }
 
         // update refresh token = null
