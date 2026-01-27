@@ -1,4 +1,6 @@
 package vn.hoidanit.jobhunter.controller;
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,7 @@ public class CompanyController {
     }
 
     @PostMapping("/companies")
+    @ApiMessage("create a company")
     public ResponseEntity<Company> createNewCompany(@Valid @RequestBody Company company){
         Company newCompany = this.companyService.handleCreateCompany(company);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCompany);
@@ -48,17 +51,16 @@ public class CompanyController {
                 .status(HttpStatus.OK).body(this.companyService.fetchAllCompanies(spec,pageable));
     }
 
-
-
-
     @GetMapping("/companies/{id}")
-    public ResponseEntity<Company> getCompanyById(@PathVariable("id") Long id) {
-        Company company = this.companyService.fetchCompanyById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(company);
+    @ApiMessage("fetch company by id")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") Long id) {
+        Optional<Company> cOptional = this.companyService.findById(id);
+        return ResponseEntity.ok().body(cOptional.get());
     }
 
     //UpdateMapping("/companies")
     @PutMapping("/companies")
+    @ApiMessage("update a company")
     public ResponseEntity<Company> updateCompany(@Valid @RequestBody Company putManCompany) {
         Company company = this.companyService.handleUpdateCompany(putManCompany);
         return ResponseEntity.ok(company);
@@ -66,6 +68,7 @@ public class CompanyController {
     
     
     @DeleteMapping("/companies/{id}")
+    @ApiMessage("delete company by id")
     public ResponseEntity<Void>  deleteCompany(@PathVariable("id") Long id) {
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok(null);

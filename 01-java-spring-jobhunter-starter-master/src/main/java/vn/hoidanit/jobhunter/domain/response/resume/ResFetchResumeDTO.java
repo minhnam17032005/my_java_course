@@ -20,6 +20,7 @@ public class ResFetchResumeDTO {
     private String createdBy;
     private String updatedBy;
 
+    private String companyName;
     private UserResume user;
     private JobResume job;
 
@@ -101,6 +102,16 @@ public class ResFetchResumeDTO {
     public void setJob(JobResume job) {
         this.job = job;
     }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    
 
 
     //inner class User
