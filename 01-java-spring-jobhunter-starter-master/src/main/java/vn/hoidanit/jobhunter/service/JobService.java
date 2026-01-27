@@ -116,7 +116,7 @@ public class JobService {
         jobInDB.setActive(j.isActive());
         
         // update job
-        Job currentJob = this.jobRepository.save(j);
+        Job currentJob = this.jobRepository.save(jobInDB);
 
         // convert response
         ResUpdateJobDTO dto = new ResUpdateJobDTO();
