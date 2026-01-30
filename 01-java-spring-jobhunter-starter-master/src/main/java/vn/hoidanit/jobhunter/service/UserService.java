@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.Company;
+import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
@@ -22,50 +23,38 @@ import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 public class UserService {
     private final UserRepository userRepository;
     private final CompanyService companyService;
+    private final RoleService roleService;
 
-    public UserService(UserRepository userRepository,CompanyService companyService) {
+    public UserService(UserRepository userRepository,CompanyService companyService,RoleService roleService) {
         this.userRepository = userRepository;
         this.companyService = companyService;
+        this.roleService = roleService;
     }
-    
-    
-    
+
     //getall
     public ResultPaginationDTO fetchAllUser(Specification<User> spec,Pageable pageable) {
 
-        Page<User> pageUser = userRepository.findAll(spec, pageable);
-        ResultPaginationDTO rs = new  ResultPaginationDTO();
-        
-        // meta
-        ResultPaginationDTO.Meta mt = new  ResultPaginationDTO.Meta();
+        Page<User> pageUser =this.userRepository.findAll(spec, pageable);
+
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();
+
         mt.setPage(pageable.getPageNumber() + 1);
         mt.setPageSize(pageable.getPageSize());
         mt.setPages(pageUser.getTotalPages());
         mt.setTotal(pageUser.getTotalElements());
 
-        //set meta into object ResultPaginationDTO
         rs.setMeta(mt);
 
         // remove sensitive data
-        List<ResUserDTO> listUsers = pageUser.getContent()
-            .stream().map(item -> new ResUserDTO(
-                    item.getId(), 
-                    item.getName(),
-                    item.getAge(),
-                    item.getEmail(),
-                    item.getGender(),
-                    item.getAddress(),    
-                    item.getCreatedAt(), 
-                    item.getUpdatedAt(),
-                    new ResUserDTO.CompanyUser(
-                        item.getCompany() != null ? item.getCompany().getId() : 0,
-                        item.getCompany() != null ? item.getCompany().getName() : null)))
+        List<ResUserDTO> listUser = pageUser.getContent()
+                .stream().map(item -> this.convertToResUserDTO(item))
                 .collect(Collectors.toList());
 
-        //set result into object ResultPaginationDTO
-        rs.setResult(listUsers);
+        rs.setResult(listUser);
         return rs;
     }
+
 
     //getid
     public User fetchUserById(long id ){
@@ -84,27 +73,42 @@ public class UserService {
                 this.companyService.findById(user.getCompany().getId());
             user.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
         }
+
+        // check role
+        if (user.getRole() != null) {
+            Role r = this.roleService.fetchById(user.getRole().getId());
+            user.setRole(r != null ? r : null);
+        }
+
         return this.userRepository.save(user);
     }
 
     //update
-    public User handUpdateUser(User repUser){
-        User currentUser=this.fetchUserById(repUser.getId());
-        if(currentUser !=null){
-            currentUser.setAddress(repUser.getAddress());
-            currentUser.setGender(repUser.getGender());
-            currentUser.setAge(repUser.getAge());
-            currentUser.setName(repUser.getName());
-
-            //check company
-            Optional<Company> companyOptional =
-                this.companyService.findById(repUser.getCompany().getId());
-            repUser.setCompany(companyOptional.isPresent() ? companyOptional.get() : null);
-            //update
-            currentUser=this.userRepository.save(currentUser);
+    public User handleUpdateUser(User reqUser) {
+        User currentUser = this.fetchUserById(reqUser.getId());
+        if (currentUser != null) {
+            currentUser.setAddress(reqUser.getAddress());
+            currentUser.setGender(reqUser.getGender());
+            currentUser.setAge(reqUser.getAge());
+            currentUser.setName(reqUser.getName());
+        
+            // check company
+        if (reqUser.getCompany() != null) {
+            Optional<Company> companyOptional = this.companyService.findById(reqUser.getCompany().getId());
+            currentUser.setCompany(companyOptional.isPresent() ? companyOptional.get() : null
+            );
         }
-        return currentUser;
-    }
+
+        // check role
+        if (reqUser.getRole() != null) {
+            Role r = this.roleService.fetchById(reqUser.getRole().getId());
+            currentUser.setRole(r != null ? r : null);
+        }
+        //update
+        currentUser=this.userRepository.save(currentUser);
+        }
+        return currentUser;  
+    }    
 
     //delete
     public void handleDeleteUser(Long id) {
@@ -160,16 +164,22 @@ public class UserService {
         return res;
     }
 
-    public ResUserDTO convertToResUserDTO(User user){
+    public ResUserDTO convertToResUserDTO(User user) {
         ResUserDTO res = new ResUserDTO();
-        ResUserDTO.CompanyUser com = new  ResUserDTO.CompanyUser();
+        ResUserDTO.CompanyUser com = new ResUserDTO.CompanyUser();
+        ResUserDTO.RoleUser roleUser = new ResUserDTO.RoleUser();
 
-        if(user.getCompany() !=null){
+        if (user.getCompany() != null) {
             com.setId(user.getCompany().getId());
             com.setName(user.getCompany().getName());
             res.setCompany(com);
         }
 
+        if (user.getRole() != null) {
+            roleUser.setId(user.getRole().getId());
+            roleUser.setName(user.getRole().getName());
+            res.setRole(roleUser);
+        }
 
         res.setId(user.getId());
         res.setEmail(user.getEmail());

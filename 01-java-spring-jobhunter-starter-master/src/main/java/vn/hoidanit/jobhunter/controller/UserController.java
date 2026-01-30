@@ -93,7 +93,7 @@ public class UserController {
     @PutMapping("/users")
     @ApiMessage("update a user")
     public ResponseEntity<ResUpdateUserDTO> updateUser(@Valid @RequestBody User user) {
-        User ericUser = userService.handUpdateUser(user);
+        User ericUser = userService.handleUpdateUser(user);
         if(ericUser ==null ){
             throw new IdInvalidException("User với id "+user.getId() +" không tồn tại");
         }
