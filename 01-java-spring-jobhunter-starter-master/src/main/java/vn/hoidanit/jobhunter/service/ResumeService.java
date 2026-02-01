@@ -119,18 +119,12 @@ public class ResumeService {
         }
 
 
-        res.setUser(
-            new ResFetchResumeDTO.UserResume(
-                resume.getUser().getId(),
-                resume.getUser().getName()
-            )
-        );
-        res.setJob(
-            new ResFetchResumeDTO.JobResume(
-                resume.getJob().getId(),
-                resume.getJob().getName()
-            )
-        );
+        res.setUser(new ResFetchResumeDTO.UserResume(
+            resume.getUser().getId(),
+            resume.getUser().getName()));
+        res.setJob(new ResFetchResumeDTO.JobResume(
+            resume.getJob().getId(),
+            resume.getJob().getName()));
 
         return res;
     }
@@ -153,8 +147,7 @@ public class ResumeService {
 
         // remove sensitive data
         List<ResFetchResumeDTO> listResume = pageUser.getContent()
-                .stream()
-                .map(item -> this.getResume(item))
+                .stream().map(item -> this.getResume(item))
                 .collect(Collectors.toList());
 
         rs.setResult(listResume);
@@ -170,8 +163,7 @@ public class ResumeService {
         FilterNode node = filterParser.parse("email='" + email + "'");
         FilterSpecification<Resume> spec =
                 filterSpecificationConverter.convert(node);
-        Page<Resume> pageResume =
-                this.resumeRepository.findAll(spec, pageable);
+        Page<Resume> pageResume =this.resumeRepository.findAll(spec, pageable);
 
         ResultPaginationDTO rs = new ResultPaginationDTO();
         ResultPaginationDTO.Meta mt = new ResultPaginationDTO.Meta();

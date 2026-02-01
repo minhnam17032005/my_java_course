@@ -10,6 +10,8 @@ public class HelloController {
 
     @GetMapping("/")
     public String getHelloWorld() throws IdInvalidException {
+
+        System.out.println("check check check check check");
         return "Hello World ,Hỏi thằng Nam ấy )";
     }
 }

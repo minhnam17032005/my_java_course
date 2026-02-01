@@ -3,6 +3,8 @@ package vn.hoidanit.jobhunter.domain;
 import java.time.Instant;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.validation.constraints.NotBlank;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -17,27 +21,31 @@ import jakarta.persistence.Table;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
 @Entity
-@Table(name = "skills")
-public class Skill {
+@Table(name = "subscribers")
+public class Subscriber {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
+
+    @NotBlank(message = "email không được để trống")
+    private String email;
+
+    @NotBlank(message = "name không được để trống")
     private String name;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = { "subscribers" })
+    @JoinTable(
+            name = "subscriber_skill",
+            joinColumns = @JoinColumn(name = "subscriber_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
+    )
+    private List<Skill> skills;
 
     private Instant createdAt;
     private Instant updatedAt;
     private String createdBy;
     private String updatedBy;
-
-    //realtionship N-N with Job
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "skills")
-    @JsonIgnore
-    private List<Job> jobs;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "skills")
-    @JsonIgnore
-    private List<Subscriber> subscribers;
 
     @PrePersist
     public void handleBeforeCreate() {
@@ -61,6 +69,14 @@ public class Skill {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -103,14 +119,13 @@ public class Skill {
         this.updatedBy = updatedBy;
     }
 
-    public List<Job> getJobs() {
-        return jobs;
+    public List<Skill> getSkills() {
+        return skills;
     }
 
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
     }
-
 
 }
 

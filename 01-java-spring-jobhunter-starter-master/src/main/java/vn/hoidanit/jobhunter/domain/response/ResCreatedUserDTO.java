@@ -1,37 +1,23 @@
 package vn.hoidanit.jobhunter.domain.response;
-
+import vn.hoidanit.jobhunter.util.constant.GenderEnum;
 import java.time.Instant;
 
-import vn.hoidanit.jobhunter.util.constant.GenderEnum;
-public class ResUpdateUserDTO {
+public class ResCreatedUserDTO {
     
     private Long id;
-
     private String name;
-
+    private String email;
     private int age; 
-
-    private GenderEnum gender; 
-
-    
-    private String address;  
-    
-    private Instant updatedAt;
-
+    private GenderEnum gender;   
+    private String address;    
+    private Instant createdAt;
     private CompanyUser company;
+
 
     //inner class
     public static class CompanyUser{
         private Long id;
         private String name;
-
-        //getter setter cho CompanyUser
-        public CompanyUser() {
-        }
-        public CompanyUser(Long id, String name) {
-            this.id = id;
-            this.name = name;
-        }
 
         public Long getId() {
             return id;
@@ -48,10 +34,10 @@ public class ResUpdateUserDTO {
         public void setName(String name) {
             this.name = name;
         }
+
     }
 
 
-    //getter setter cho ResUpdateUserDTO
     public Long getId() {
         return id;
     }
@@ -68,6 +54,14 @@ public class ResUpdateUserDTO {
         this.name = name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public int getAge() {
         return age;
     }
@@ -76,7 +70,7 @@ public class ResUpdateUserDTO {
         this.age = age;
     }
 
-    public GenderEnum  getGender() {
+    public GenderEnum getGender() {
         return gender;
     }
 
@@ -92,12 +86,12 @@ public class ResUpdateUserDTO {
         this.address = address;
     }
 
-    public Instant getUpdatedAt() {
-        return updatedAt;
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
     }
 
     public CompanyUser getCompany() {

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import vn.hoidanit.jobhunter.domain.Company;
 import vn.hoidanit.jobhunter.domain.Role;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
-import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreatedUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdatedUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.repository.UserRepository;
@@ -144,9 +144,9 @@ public class UserService {
     return this.userRepository.existsByEmail(email);
     }
 
-    public ResCreateUserDTO convertToResCreateUserDTO(User user) {
-        ResCreateUserDTO res = new ResCreateUserDTO();
-        ResCreateUserDTO.CompanyUser com =new  ResCreateUserDTO.CompanyUser();
+    public ResCreatedUserDTO convertToResCreatedUserDTO(User user) {
+        ResCreatedUserDTO res = new ResCreatedUserDTO();
+        ResCreatedUserDTO.CompanyUser com =new  ResCreatedUserDTO.CompanyUser();
         res.setId(user.getId());
         res.setEmail(user.getEmail());
         res.setName(user.getName());
@@ -192,9 +192,9 @@ public class UserService {
         return res;
     }
 
-    public ResUpdateUserDTO convertToResUpdateUserDTO(User user){
-        ResUpdateUserDTO res = new ResUpdateUserDTO();
-        ResUpdateUserDTO.CompanyUser com = new  ResUpdateUserDTO.CompanyUser();
+    public ResUpdatedUserDTO convertToResUpdatedUserDTO(User user){
+        ResUpdatedUserDTO res = new ResUpdatedUserDTO();
+        ResUpdatedUserDTO.CompanyUser com = new  ResUpdatedUserDTO.CompanyUser();
         if(user.getCompany() !=null){
             com.setId(user.getCompany().getId());
             com.setName(user.getCompany().getName());

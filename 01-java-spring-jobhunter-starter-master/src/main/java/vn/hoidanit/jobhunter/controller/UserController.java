@@ -18,8 +18,8 @@ import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
-import vn.hoidanit.jobhunter.domain.response.ResCreateUserDTO;
-import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResCreatedUserDTO;
+import vn.hoidanit.jobhunter.domain.response.ResUpdatedUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResUserDTO;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
@@ -71,7 +71,7 @@ public class UserController {
     //PostMapping("/users")
     @PostMapping("/users")
     @ApiMessage("Create a new user")
-    public ResponseEntity<ResCreateUserDTO> createNewUser(@Valid @RequestBody User postManUser) 
+    public ResponseEntity<ResCreatedUserDTO> createNewUser(@Valid @RequestBody User postManUser) 
         throws IdInvalidException {
 
         boolean isEmailExist =this.userService.isEmailExist(postManUser.getEmail());
@@ -85,19 +85,19 @@ public class UserController {
 
         User ericUser =this.userService.handleCreateUser(postManUser);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertToResCreateUserDTO(ericUser));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.convertToResCreatedUserDTO(ericUser));
     }
 
     
     //UpdateMapping("/users")
     @PutMapping("/users")
     @ApiMessage("update a user")
-    public ResponseEntity<ResUpdateUserDTO> updateUser(@Valid @RequestBody User user) {
+    public ResponseEntity<ResUpdatedUserDTO> updateUser(@Valid @RequestBody User user) {
         User ericUser = userService.handleUpdateUser(user);
         if(ericUser ==null ){
             throw new IdInvalidException("User với id "+user.getId() +" không tồn tại");
         }
-        return ResponseEntity.ok(this.userService.convertToResUpdateUserDTO(ericUser));
+        return ResponseEntity.ok(this.userService.convertToResUpdatedUserDTO(ericUser));
     }
 
     //delete
