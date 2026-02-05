@@ -1,6 +1,7 @@
 package vn.hoidanit.jobhunter.controller;
 
 import vn.hoidanit.jobhunter.service.SubscriberService;
+import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.util.error.IdInvalidException;
 
@@ -19,8 +20,10 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1")
 public class SubscriberController {
     private final SubscriberService subscriberService;
+    private final SecurityUtil securityUtil;
     
-    public SubscriberController(SubscriberService subscriberService){
+    public SubscriberController(SubscriberService subscriberService,SecurityUtil securityUtil){
+        this.securityUtil = securityUtil;
         this.subscriberService = subscriberService;
     }
 
@@ -53,6 +56,18 @@ public class SubscriberController {
 
         return ResponseEntity.ok().body(this.subscriberService.update(subsDB, subsRequest));
     }
+
+    @PostMapping("/subscribers/skills")
+    @ApiMessage("Get subscriber's skill")
+    public ResponseEntity<Subscriber> getSubscribersSkill() throws IdInvalidException {
+        String email = SecurityUtil.getCurrentUserLogin().isPresent() == true
+                ? SecurityUtil.getCurrentUserLogin().get()
+                : "";
+
+        return ResponseEntity.ok()
+                .body(this.subscriberService.findByEmail(email));
+    }
+
 
 
 

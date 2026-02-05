@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import vn.hoidanit.jobhunter.domain.response.email.ResEmailJob;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,12 @@ public class SubscriberService {
         }
         return null;
     }
+
+    // @Scheduled(cron = "*/10 * * * * *")
+    // public void testCron() {
+    //     System.out.println(">>> TEST CRON");
+    // }
+
     public boolean isExistsByEmail(String email) {
         return this.subscriberRepository.existsByEmail(email);
     }
@@ -112,11 +119,8 @@ public class SubscriberService {
         return res;
     }
 
-
-
-
-
-    
-
+    public Subscriber findByEmail(String email) {
+        return this.subscriberRepository.findByEmail(email);
+    }
 
 }

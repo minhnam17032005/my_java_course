@@ -6,6 +6,8 @@ import vn.hoidanit.jobhunter.service.EmailService;
 import vn.hoidanit.jobhunter.util.annotation.ApiMessage;
 import vn.hoidanit.jobhunter.service.SubscriberService;
 
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
@@ -22,6 +24,8 @@ public class EmailController {
 
     @GetMapping("/email")
     @ApiMessage("Send simple email")
+    // @Scheduled(cron = "*/30 * * * * *") //every 30 seconds
+    // @Transactional
     public String sendSimpleEmail() {
         //this.emailService.sendSimpleEmail();
         //this.emailService.sendEmailSync("namcoder2005@gmail.com",

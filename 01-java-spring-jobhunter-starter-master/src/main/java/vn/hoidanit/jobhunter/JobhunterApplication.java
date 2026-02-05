@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import vn.hoidanit.jobhunter.repository.PermissionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +21,7 @@ import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @SpringBootApplication
 @EnableAsync //xử lí bất đồng bộ 
+@EnableScheduling
 public class JobhunterApplication {
 
     public static void main(String[] args) {
